@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #f5f5f5;
+      padding: 20px;
+      max-width: 700px;
+      margin: auto;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      padding: 10px 20px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 8px;
+      background: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+    .section {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .card {
+      background: #fff;
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin-top: 10px;
+      border-radius: 10px;
+    }
+    .card img {
+      width: 100%;
+      border-radius: 8px;
+      margin: 10px 0;
+    }
+    .card button {
+      background: #e74c3c;
+      margin-right: 10px;
+    }
+    .card .edit {
+      background: #3498db;
+    }
+  </style>
+</head>
+<body>
+  <h2>Admin Panel</h2>
+  <button onclick="logout()">Çıxış</button>
+
+  <div class="section">
+    <h3>📝 Bloq Əlavə Et / Redaktə Et</h3>
+    <input type="text" id="blogTitle" placeholder="Başlıq">
+    <textarea id="blogContent" placeholder="Məzmun"></textarea>
+    <!-- Şəkil URL sahəsi əlavə edildi -->
+    <input type="text" id="blogImageUrl" placeholder="Şəkil URL-i">
+    <input type="hidden" id="blogId">
+    <button onclick="addOrUpdateBlog()">Yadda saxla</button>
+    <div id="blogList"></div>
+  </div>
+
+  <div class="section">
+    <h3>📎 Sənəd Yüklə</h3>
+    <input type="text" id="fileTitle" placeholder="Sənəd Başlığı">
+    <textarea id="fileDesc" placeholder="Təsvir"></textarea>
+    <input type="file" id="fileInput">
+    <button onclick="uploadFile()">Yadda saxla</button>
+    <div id="fileList"></div>
+  </div>
+
+  <script type="module">
+    import { auth, db } from './firebase-config.js';
+    import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+    import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
+    onAuthStateChanged(auth, user => {
+      if (!user) window.location.href = "login.html";
+    });
+
+    window.logout = () => signOut(auth).then(() => window.location.href = "login.html");
+
+    const blogRef = collection(db, "blogs");
+    const fileRef = collection(db, "documents");
+
+    window.addOrUpdateBlog = async () => {
+      const title = blogTitle.value;
+      const content = blogContent.value;
+      const imageUrl = blogImageUrl.value; // URL əlavə edildi
+      const id = blogId.value;
+
+      if (!title || !content || !imageUrl) return alert("Bütün sahələri doldurun!");
+
+      const data = { title, content, image: imageUrl, updatedAt: serverTimestamp() };
+      if (id) {
+        await updateDoc(doc(db, "blogs", id), data);
+      } else {
+        data.createdAt = serverTimestamp();
+        await addDoc(blogRef, data);
+      }
+      blogTitle.value = blogContent.value = blogImageUrl.value = blogId.value = "";
+      loadBlogs();
+    };
+
+    window.editBlog = async id => {
+      const snap = await getDoc(doc(db, "blogs", id));
+      const data = snap.data();
+      blogTitle.value = data.title;
+      blogContent.value = data.content;
+      blogImageUrl.value = data.image; // URL göstərildi
+      blogId.value = id;
+      alert("Şəkili redaktə etmək üçün URL-i yenidən daxil etməlisiniz.");
+    };
+
+    window.deleteBlog = async id => {
+      await deleteDoc(doc(db, "blogs", id));
+      loadBlogs();
+    };
+
+    async function loadBlogs() {
+      blogList.innerHTML = "";
+      const snap = await getDocs(blogRef);
+      snap.forEach(docItem => {
+        const b = docItem.data();
+        blogList.innerHTML += `<div class="card">
+          <h4>${b.title}</h4>
+          <p>${b.content}</p>
+          <img src="${b.image}" alt="Şəkil">
+          <button class="edit" onclick="editBlog('${docItem.id}')">Redaktə</button>
+          <button onclick="deleteBlog('${docItem.id}')">Sil</button>
+        </div>`;
+      });
+    }
+
+    window.uploadFile = async () => {
+      const title = fileTitle.value, desc = fileDesc.value, file = fileInput.files[0];
+      if (!title || !desc || !file) return alert("Bütün sənəd sahələri doldurulmalıdır!");
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        const data = {
+          title, description: desc,
+          name: file.name,
+          data: reader.result,
+          uploadedAt: serverTimestamp()
+        };
+        await addDoc(fileRef, data);
+        fileTitle.value = fileDesc.value = fileInput.value = "";
+        loadFiles();
+      };
+      reader.readAsDataURL(file);
+    };
+
+    window.deleteFile = async id => {
+      await deleteDoc(doc(db, "documents", id));
+      loadFiles();
+    };
+
+    async function loadFiles() {
+      fileList.innerHTML = "";
+      const snap = await getDocs(fileRef);
+      snap.forEach(docItem => {
+        const d = docItem.data();
+        fileList.innerHTML += `<div class="card">
+          <h4>${d.title}</h4>
+          <p>${d.description}</p>
+          <button onclick="deleteFile('${docItem.id}')">Sil</button>
+        </div>`;
+      });
+    }
+
+    loadBlogs();
+    loadFiles();
+  </script>
+</body>
+</html>

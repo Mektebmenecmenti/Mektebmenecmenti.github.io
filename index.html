@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yeni Direktorlara Dəstək Mərkəzi</title>
+    <style>
+        :root {
+            --primary-color: #2E86AB;
+            --secondary-color: #F7F7F7;
+            --text-color: #333;
+            --card-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #f9f9f9;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav li {
+            margin-left: 1.5rem;
+            position: relative;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 0.5rem 0;
+        }
+
+        nav a:hover {
+            opacity: 0.8;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: white;
+            transition: var(--transition);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .hero {
+            background: linear-gradient(rgba(46, 134, 171, 0.8), rgba(46, 134, 171, 0.9)), 
+                        url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center/cover;
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 0 1rem;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            animation: fadeIn 1s ease;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin-bottom: 2rem;
+            animation: fadeIn 1.5s ease;
+        }
+
+        .cta-button {
+            background-color: white;
+            color: var(--primary-color);
+            border: none;
+            padding: 0.8rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            animation: fadeIn 2s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .main-content {
+            min-height: calc(100vh - 200px);
+        }
+
+        .page {
+            display: none;
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2rem;
+            color: var(--primary-color);
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+
+        .posts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .post-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-image {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .post-content {
+            padding: 1.5rem;
+        }
+
+        .post-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .post-excerpt {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .post-date {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 1rem;
+        }
+
+        .documents-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .document-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .document-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .document-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .document-description {
+            color: #666;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .document-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #888;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .download-btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+        .info-section {
+  background: linear-gradient(135deg, #e0f7fa, #ffffff);
+  padding: 40px 30px;
+  margin: 40px 0;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.4s ease;
+}
+
+.info-content p {
+  margin-bottom: 20px;
+  font-size: 17px;
+  color: #333;
+  line-height: 1.8;
+}
+
+.info-content .highlight {
+  font-size: 22px;
+  font-weight: bold;
+  color: #00796b;
+}
+
+.info-content .signature {
+  font-style: italic;
+  color: #555;
+  margin-top: 30px;
+  font-size: 16px;
+}
+
+
+
+        .download-btn:hover {
+            background-color: #1a6a8f;
+
+        }
+        .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1000;
+    overflow-y: auto;
+}
+.modal-body {
+  white-space: pre-line;
+  word-wrap: break-word;
+  line-height: 1.8;
+  font-size: 16px;
+  color: #333;
+  max-width: 100%;
+  overflow-wrap: break-word;
+  padding: 15px;
+}
+.modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 2rem;
+    border-radius: 8px;
+    max-width: 800px;
+    width: 90%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    position: relative;
+    animation: fadeIn 0.3s ease;
+}
+
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--primary-color);
+}
+
+.modal-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+}
+
+.modal-title {
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.modal-date {
+    color: #888;
+    margin-bottom: 1.5rem;
+}
+
+
+        .modal-body {
+            line-height: 1.8;
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .contact-info {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .contact-form {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: inherit;
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+        }
+
+        .submit-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .submit-btn:hover {
+            background-color: #1a6a8f;
+        }
+
+        .site-footer {
+  background: linear-gradient(135deg, #00796b, #004d40);
+  color: #fff;
+  padding: 40px 20px 20px;
+  margin-top: 60px;
+  border-top-left-radius: 40px;
+  border-top-right-radius: 40px;
+}
+
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.footer-left, .footer-right {
+  flex: 1 1 300px;
+  margin: 10px;
+}
+
+.footer-left h3 {
+  font-size: 26px;
+  margin-bottom: 15px;
+}
+
+.footer-left p, .footer-right p {
+  font-size: 16px;
+  margin: 8px 0;
+  line-height: 1.6;
+}
+
+.footer-right h4 {
+  margin-bottom: 15px;
+  font-size: 22px;
+}
+
+.footer-right i {
+  margin-right: 8px;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 14px;
+  border-top: 1px solid rgba(255,255,255,0.3);
+  padding-top: 15px;
+}
+
+/* Responsive dizayn üçün */
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+
+        /* Auth üçün yeni stillər */
+        .auth-container {
+            max-width: 400px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .auth-form .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .auth-form input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .auth-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 4px;
+            width: 100%;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .auth-links {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        /* Admin panel üçün stillər */
+        .admin-panel {
+            background: #f0f0f0;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+
+        .admin-actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .admin-form {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            margin-top: 1rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            nav ul {
+                margin-top: 1rem;
+            }
+
+            nav li {
+                margin-left: 1rem;
+            }
+
+            .hero h2 {
+                font-size: 2rem;
+            }
+
+            .posts-container,
+            .documents-container {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                margin: 10% auto;
+            }
+        }
+    </style>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo" id="home-link">
+            <h1>Məktəb Menecmenti</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#" class="nav-link active" data-page="home">Ana Səhifə</a></li>
+                <li><a href="#" class="nav-link" data-page="documents">Sənədlər</a></li>
+                <li><a href="#" class="nav-link" data-page="blog">Bloq</a></li>
+                <li><a href="#" class="nav-link" data-page="contact">Əlaqə</a></li>
+                <li><a href="login.html">Giriş</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="main-content">
+        <div class="page active" id="home-page">
+            <section class="hero">
+                <h2>Yeni Direktorlara Dəstək Mərkəzi</h2>
+                <p>Peşəkar direktorlar və innovativ metodlar ilə yeni nəsil təhsil platforması</p>
+                <button class="cta-button" id="cta-button">Daha çox öyrən</button>
+            </section>
+
+            <section class="info-section">
+                <h2 class="section-title">Portal Haqqında</h2>
+                <div class="info-content">
+                  <p class="highlight">
+                    Məktəb Menecmentinə xoş gəlmisiniz! 🎓
+                  </p>
+                  <p>
+                    Bu platforma məktəb rəhbərliyi və müəllim heyəti üçün sənədlərin, təlimatların və praktiki materialların müasir və sürətli idarə olunması məqsədilə yaradılmışdır.
+                  </p>
+                  <p>
+                    Saytda yeni sənədlər, yenilənmiş qanunvericilik məlumatları və faydalı bloq yazıları mütəmadi olaraq əlavə edilir. Bütün materiallar sadə və əlçatan şəkildə təqdim olunur.
+                  </p>
+                  <p>
+                    Əlavə suallarınız və ya təklifləriniz varsa, bizimlə əlaqə bölməsi vasitəsilə əlaqə saxlaya bilərsiniz.
+                  </p>
+                  </p>
+                </div>
+              </section>
+              
+        </div>
+
+        <div id="posts-container"></div>
+
+    
+
+        <div class="page" id="documents-page">
+            <section class="documents-section">
+                <h2 class="section-title">Sənəd Nümunələri</h2>
+                <div class="documents-container" id="documents-container">
+                 </div>
+            </section>
+        </div>
+
+        <div class="page" id="blog-page">
+            <section class="blog-section">
+                <h2 class="section-title">Bütün Bloq Yazıları</h2>
+                <div class="posts-container" id="all-posts-container">
+                </div>
+            </section>
+        </div>
+
+        <div class="page" id="contact-page">
+            <section class="contact-section">
+                <h2 class="section-title">Əlaqə</h2>
+                <div class="contact-container">
+                    <div class="contact-info">
+                        <h3>Əlaqə məlumatları</h3>
+                        <p><i class="fas fa-map-marker-alt"></i> Bakı, Azərbaycan</p>
+                        <p><i class="fas fa-phone"></i> +994 55 921 82 05</p>
+                        <p><i class="fas fa-envelope"></i> idareetmeportali@gmail.com</p>
+                    </div>
+                    <div class="contact-form">
+                        <h3>Bizimlə əlaqə saxlayın</h3>
+                        <form id="contact-form">
+                            <div class="form-group">
+                                <label for="name">Ad Soyad</label>
+                                <input type="text" id="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">E-poçt</label>
+                                <input type="email" id="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Mesaj</label>
+                                <textarea id="message" required></textarea>
+                            </div>
+                            <button type="submit" class="submit-btn">Göndər</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="page" id="login-page">
+            <div class="auth-container">
+                <h2 class="section-title">Giriş</h2>
+                <form id="login-form" class="auth-form">
+                    <div class="form-group">
+                        <input type="email" id="login-email" placeholder="E-poçt" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="login-password" placeholder="Şifrə" required>
+                    </div>
+                    <button type="submit" class="auth-btn">Daxil ol</button>
+                </form>
+                <div class="auth-links">
+                    <p>Hesabınız yoxdur? <a href="#" id="show-register">Qeydiyyatdan keçin</a></p>
+                </div>
+            </div>
+
+            <div class="auth-container" id="register-container" style="display: none;">
+                <h2 class="section-title">Qeydiyyat</h2>
+                <form id="register-form" class="auth-form">
+                    <div class="form-group">
+                        <input type="text" id="register-name" placeholder="Ad Soyad" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="register-email" placeholder="E-poçt" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="register-password" placeholder="Şifrə" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="register-confirm" placeholder="Şifrə təkrar" required>
+                    </div>
+                    <button type="submit" class="auth-btn">Qeydiyyat</button>
+                </form>
+                <div class="auth-links">
+                    <p>Hesabınız var? <a href="#" id="show-login">Daxil olun</a></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="page" id="admin-page" style="display: none;">
+            <div class="admin-panel">
+                <h2 class="section-title">Admin Paneli</h2>
+                <div class="admin-actions">
+                    <button id="add-blog-btn" class="auth-btn">Yeni Bloq Əlavə Et</button>
+                    <button id="add-document-btn" class="auth-btn">Yeni Sənəd Əlavə Et</button>
+                </div>
+                
+                <div id="add-blog-form" class="admin-form" style="display: none;">
+                    <h3>Yeni Bloq Yazısı</h3>
+                    <form id="new-blog-form">
+                        <div class="form-group">
+                            <input type="text" id="blog-title" placeholder="Başlıq" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="blog-content" placeholder="Məzmun" rows="5" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="blog-image">Şəkil (İstəyə bağlı)</label>
+                            <input type="file" id="blog-image" accept="image/*">
+                        </div>
+                        <button type="submit" class="auth-btn">Yadda Saxla</button>
+                    </form>
+                </div>
+                
+                <div id="add-document-form" class="admin-form" style="display: none;">
+                    <h3>Yeni Sənəd</h3>
+                    <form id="new-document-form">
+                        <div class="form-group">
+                            <input type="text" id="doc-title" placeholder="Başlıq" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="doc-description" placeholder="Təsvir" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="doc-file">Sənəd faylı</label>
+                            <input type="file" id="doc-file" required>
+                        </div>
+                        <button type="submit" class="auth-btn">Yüklə</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="post-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <img id="modal-image" src="" alt="Şəkil" class="modal-image">
+            <h2 id="modal-title" class="modal-title"></h2>
+            <div id="modal-text" class="modal-body"></div>
+        </div>
+    </div>
+      
+  
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <h3>Məktəb Menecmenti</h3>
+        <p>Sadəlik, sürət və əlçatanlıq ilə idarəetməni asanlaşdırırıq.</p>
+      </div>
+      <div class="footer-right">
+        <h4>Əlaqə</h4>
+        <p><i class="fas fa-map-marker-alt"></i> Bakı, Azərbaycan</p>
+        <p><i class="fas fa-envelope"></i> idareetmeportali@gmail.com</p>
+        <p><i class="fas fa-phone"></i> +994 55 921 82 05</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Məktəb Menecmenti. Bütün hüquqlar qorunur.</p>
+    </div>
+  </footer>
+  
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-storage-compat.js"></script>
+
+    <script>
+        const firebaseConfig = {
+    apiKey: "AIzaSyDncbU605eCJ8bYvxJKJI71CLGgLFlbkx0",
+    authDomain: "idareetmeportali-e3e6f.firebaseapp.com",
+    projectId: "idareetmeportali-e3e6f",
+    storageBucket: "idareetmeportali-e3e6f.firebasestorage.app",
+    messagingSenderId: "491252468385",
+    appId: "1:491252468385:web:5db624f2925065c242bee0"
+  };
+
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+
+        const pages = document.querySelectorAll('.page');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const homeLink = document.getElementById('home-link');
+        const postsContainer = document.getElementById('posts-container');
+        const allPostsContainer = document.getElementById('all-posts-container');
+        const documentsContainer = document.getElementById('documents-container');
+        const contactForm = document.getElementById('contact-form');
+        const modal = document.getElementById('post-modal');
+        const closeModal = document.querySelector('.close-modal');
+        const ctaButton = document.getElementById('cta-button');
+        
+
+        auth.onAuthStateChanged(user => {
+            const authLink = document.getElementById('auth-link');
+            if (user) {
+                authLink.innerHTML = `<a href="#" class="nav-link" id="logout-btn">Çıxış</a>`;
+                
+                db.collection('users').doc(user.uid).get().then(doc => {
+                    if (doc.exists && doc.data().isAdmin) {                        document.getElementById('admin-page').style.display = 'block';
+                        authLink.innerHTML = `<a href="#" class="nav-link" data-page="admin">Admin</a> 
+                            <a href="#" class="nav-link" id="logout-btn">Çıxış</a>`;
+                    }
+                });
+                
+                document.getElementById('logout-btn').addEventListener('click', signOut);
+            } else {
+                authLink.innerHTML = `<a href="#" class="nav-link" data-page="login">Giriş</a>`;
+                document.getElementById('admin-page').style.display = 'none';
+            }
+        });
+            
+        document.getElementById('login-form').addEventListener('submit', e => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            auth.signInWithEmailAndPassword(email, password)
+                .then(() => {
+                    alert('Uğurla daxil oldunuz!');
+                    showPage('home');
+                })
+                .catch(error => {
+                    alert('Xəta: ' + error.message);
+                });
+        });
+
+        document.getElementById('register-form').addEventListener('submit', e => {
+            e.preventDefault();
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const confirm = document.getElementById('register-confirm').value;
+            
+            if (password !== confirm) {
+                alert('Şifrələr eyni deyil!');
+                return;
+            }
+            
+            auth.createUserWithEmailAndPassword(email, password)
+                .then(userCredential => {
+                    return db.collection('users').doc(userCredential.user.uid).set({
+                        name: name,
+                        email: email,
+                        isAdmin: false,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                })
+                .then(() => {
+                    alert('Qeydiyyat uğurla tamamlandı!');
+                    showPage('home');
+                })
+                .catch(error => {
+                    alert('Xəta: ' + error.message);
+                });
+        });
+
+        function signOut() {
+            auth.signOut().then(() => {
+                showPage('home');
+            });
+        }
+
+        function loadBlogPosts() {
+    db.collection("blogs").orderBy("createdAt", "desc").get()
+        .then(querySnapshot => {
+            const postsContainer = document.getElementById('posts-container');
+            const allPostsContainer = document.getElementById('all-posts-container');
+
+            postsContainer.innerHTML = '';
+            allPostsContainer.innerHTML = '';
+
+            querySnapshot.forEach((doc, index) => {
+                const data = doc.data();
+                const image = data.imageUrl || data.image || 'https://via.placeholder.com/300x200';
+                const title = data.title || 'Başlıq yoxdur';
+                const content = data.content || 'Məzmun yoxdur';
+                const date = data.createdAt ? data.createdAt.toDate().toLocaleDateString() : '';
+
+                const postHTML = `
+                    <div class="post-card">
+                        <img src="${image}" alt="${title}" class="post-image">
+                        <div class="post-content">
+                            <h3 class="post-title">${title}</h3>
+                            <p class="post-excerpt">${content.substring(0, 100)}...</p>
+                            <p class="post-date">${date}</p>
+                            <a href="#" class="read-more" data-title="${title}" data-content="${content}" data-image="${image}">Ətraflı oxu →</a>
+                        </div>
+                    </div>
+                `;
+
+                if (index < 3) postsContainer.innerHTML += postHTML;
+                allPostsContainer.innerHTML += postHTML;
+            });
+
+            setupReadMoreButtons(); // Ətraflı oxu düymələrinə click əlavə edirik
+        });
+}
+
+// "Ətraflı oxu" düymələrinin işləməsi üçün:
+function setupReadMoreButtons() {
+    const readMoreButtons = document.querySelectorAll('.read-more');
+    readMoreButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            const title = button.getAttribute('data-title');
+            const content = button.getAttribute('data-content');
+            const image = button.getAttribute('data-image');
+
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-text').innerText = content;
+            if (image && image !== 'undefined') {
+                document.getElementById('modal-image').src = image;
+                document.getElementById('modal-image').style.display = 'block';
+            } else {
+                document.getElementById('modal-image').style.display = 'none';
+            }
+            document.getElementById('post-modal').style.display = 'block';
+        });
+    });
+}
+
+// Modalı bağlamaq üçün:
+document.querySelector('.close-modal').addEventListener('click', () => {
+    document.getElementById('post-modal').style.display = 'none';
+});
+
+// Modal xaricinə klikləyəndə bağlansın:
+window.addEventListener('click', (e) => {
+    const modal = document.getElementById('post-modal');
+    if (e.target == modal) {
+        modal.style.display = 'none';
+    }
+});
+
+
+function loadDocuments() {
+  db.collection("documents").orderBy("uploadedAt", "desc").get()
+    .then(querySnapshot => {
+      const container = document.getElementById('documents-container');
+      container.innerHTML = '';
+
+      querySnapshot.forEach(doc => {
+        const data = doc.data();
+        const downloadURL = data.url || data.data; 
+        const fileName = data.name || "sened.pdf";
+
+        const docHTML = `
+          <div class="document-card">
+            <h3 class="document-title">${data.title}</h3>
+            <p class="document-description">${data.description}</p>
+            <div class="document-meta">
+              <span>${data.type || ''}</span>
+              <span>${data.size ? (data.size / 1024).toFixed(1) + ' KB' : ''}</span>
+              <span>${data.uploadedAt ? data.uploadedAt.toDate().toLocaleDateString() : ''}</span>
+            </div>
+            <a href="${downloadURL}" class="download-btn" download="${fileName}">📥 Yüklə</a>
+          </div>
+        `;
+        container.innerHTML += docHTML;
+      });
+    });
+}
+
+
+
+        document.getElementById('add-blog-btn').addEventListener('click', () => {
+            document.getElementById('add-blog-form').style.display = 'block';
+            document.getElementById('add-document-form').style.display = 'none';
+        });
+
+        document.getElementById('new-blog-form').addEventListener('submit', e => {
+            e.preventDefault();
+            const title = document.getElementById('blog-title').value;
+            const content = document.getElementById('blog-content').value;
+            const imageFile = document.getElementById('blog-image').files[0];
+            
+            if (imageFile) {
+                const storageRef = storage.ref('blog-images/' + imageFile.name);
+                storageRef.put(imageFile).then(snapshot => {
+                    return snapshot.ref.getDownloadURL();
+                }).then(url => {
+                    return db.collection('blogs').add({
+                        title: title,
+                        content: content,
+                        imageUrl: url,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }).then(() => {
+                    alert('Bloq yazısı əlavə edildi!');
+                    document.getElementById('new-blog-form').reset();
+                    loadBlogPosts();
+                });
+            } else {
+                db.collection('blogs').add({
+                    title: title,
+                    content: content,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                }).then(() => {
+                    alert('Bloq yazısı əlavə edildi!');
+                    document.getElementById('new-blog-form').reset();
+                    loadBlogPosts();
+                });
+            }
+        });
+
+        document.getElementById('add-document-btn').addEventListener('click', () => {
+            document.getElementById('add-document-form').style.display = 'block';
+            document.getElementById('add-blog-form').style.display = 'none';
+        });
+
+        document.getElementById('new-document-form').addEventListener('submit', e => {
+            e.preventDefault();
+            const title = document.getElementById('doc-title').value;
+            const description = document.getElementById('doc-description').value;
+            const file = document.getElementById('doc-file').files[0];
+            
+            if (!file) {
+                alert('Zəhmət olmasa sənəd seçin!');
+                return;
+            }
+            
+            const storageRef = storage.ref('documents/' + file.name);
+            storageRef.put(file).then(snapshot => {
+                return Promise.all([
+                    snapshot.ref.getDownloadURL(),
+                    snapshot.ref.getMetadata()
+                ]);
+            }).then(([url, metadata]) => {
+                return db.collection('documents').add({
+                    title: title,
+                    description: description,
+                    url: url,
+                    type: metadata.contentType,
+                    size: metadata.size,
+                    uploadedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            }).then(() => {
+                alert('Sənəd uğurla yükləndi!');
+                document.getElementById('new-document-form').reset();
+                loadDocuments();
+            }).catch(error => {
+                alert('Xəta: ' + error.message);
+            });
+        });
+
+        function showPage(pageId) {
+            pages.forEach(page => {
+                page.classList.remove('active');
+                if (page.id === `${pageId}-page`) {
+                    page.classList.add('active');
+                }
+            });
+            
+            window.scrollTo(0, 0);
+        }
+
+        function updateActiveNav(pageId) {
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-page') === pageId) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadBlogPosts();
+            loadDocuments();
+            
+            document.getElementById('show-register').addEventListener('click', e => {
+                e.preventDefault();
+                document.getElementById('login-form').style.display = 'none';
+                document.getElementById('register-container').style.display = 'block';
+            });
+            
+            document.getElementById('show-login').addEventListener('click', e => {
+                e.preventDefault();
+                document.getElementById('login-form').style.display = 'block';
+                document.getElementById('register-container').style.display = 'none';
+            });
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', e => {
+                    e.preventDefault();
+                    const pageId = link.getAttribute('data-page');
+                    if (pageId) {
+                        showPage(pageId);
+                        updateActiveNav(pageId);
+                    }
+                });
+            });
+            document.addEventListener('click', function(e) {
+  if (e.target.classList.contains('read-more')) {
+    e.preventDefault();
+    document.getElementById('full-post-title').innerText = e.target.dataset.title;
+    document.getElementById('full-post-image').src = e.target.dataset.image;
+    document.getElementById('full-post-content').innerText = e.target.dataset.content;
+    document.getElementById('full-post-date').innerText = e.target.dataset.date;
+    document.getElementById('post-modal').style.display = 'block';
+  }
+
+  if (e.target.classList.contains('close-modal')) {
+    document.getElementById('post-modal').style.display = 'none';
+  }
+
+  if (e.target.id === 'post-modal') {
+    document.getElementById('post-modal').style.display = 'none';
+  }
+});
+            
+            homeLink.addEventListener('click', e => {
+                e.preventDefault();
+                showPage('home');
+                updateActiveNav('home');
+            });
+            
+            ctaButton.addEventListener('click', () => {
+                showPage('documents');
+                updateActiveNav('documents');
+            });
+            
+            contactForm.addEventListener('submit', e => {
+    e.preventDefault();
+
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const message = document.getElementById('message').value.trim();
+
+    if (!name || !email || !message) {
+        alert("Zəhmət olmasa bütün sahələri doldurun.");
+        return;
+    }
+
+    db.collection("messages").add({
+        name,
+        email,
+        message,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    })
+    .then(() => {
+        alert('Mesajınız uğurla göndərildi!');
+        contactForm.reset();
+    })
+    .catch(error => {
+        console.error("Xəta baş verdi:", error);
+        alert('Mesaj göndərilə bilmədi. Zəhmət olmasa bir daha cəhd edin.');
+    });
+});
+
+            closeModal.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+            
+            window.addEventListener('click', e => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+    </script>
